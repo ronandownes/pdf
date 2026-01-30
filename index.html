@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Mr Downes Maths — PDF Gallery</title>
+
 <style>
   :root {
     --bg:#ffffff;
@@ -11,42 +12,120 @@
     --muted:#6b7280;
     --line:#e5e7eb;
     --soft:#f3f4f6;
+    --chip:#eef2ff;
     --btn:#111827;
     --btnText:#ffffff;
+    --shadow: 0 8px 24px rgba(17,24,39,.08);
   }
+
   *{box-sizing:border-box}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-  .wrap{max-width:1050px;margin:0 auto;padding:16px 14px 28px}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px}
-  .brand{display:flex;align-items:center;gap:10px;min-width:220px}
+  .wrap{max-width:1160px;margin:0 auto;padding:14px 12px 26px}
+
+  header{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;min-width:230px}
   .dots{display:flex;gap:6px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:999px;background:var(--soft)}
   .dot{width:9px;height:9px;border-radius:999px}
   .titles{line-height:1.1}
-  .titles .h1{font-weight:700;font-size:15px;margin:0}
+  .titles .h1{font-weight:750;font-size:15px;margin:0}
   .titles .h2{font-size:12px;color:var(--muted);margin-top:3px}
-  .controls{display:flex;flex-direction:column;gap:6px;align-items:flex-end;width:min(520px,100%)}
-  .search{width:100%;display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+
+  .controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center;width:min(640px,100%)}
+  .search{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;min-width:min(360px,100%)}
   .search input{width:100%;border:0;outline:0;font-size:13px}
-  .hint{font-size:12px;color:var(--muted)}
-  .panel{margin-top:10px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--soft);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-  th{font-size:12px;color:#374151;background:#fff;text-align:left;user-select:none;cursor:pointer;white-space:nowrap}
-  tr:last-child td{border-bottom:0}
-  .name .file{display:inline-block;font-weight:650;font-size:13px;color:var(--text);text-decoration:none}
-  .name .file:hover{text-decoration:underline}
-  .meta{display:block;margin-top:3px;font-size:12px;color:var(--muted)}
-  .num{font-size:12px;color:#374151;white-space:nowrap}
-  .actions{white-space:nowrap}
-  .btn{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:10px;border:1px solid var(--btn);background:var(--btn);color:var(--btnText);text-decoration:none;font-size:12px;margin-right:6px}
+  select{
+    border:1px solid var(--line);border-radius:10px;padding:8px 10px;
+    background:#fff;font-size:13px;color:var(--text);
+  }
+  .toggle{
+    border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;
+    font-size:13px;color:var(--text); cursor:pointer;
+  }
+
+  .bar{
+    margin-top:10px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;
+  }
+  .bar-top{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:8px 10px;background:var(--soft);border-bottom:1px solid var(--line);
+    font-size:12px;color:var(--muted);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .card{
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow: var(--shadow);
+    display:flex;
+    flex-direction:column;
+    min-height: 350px;
+  }
+
+  .thumb{
+    position:relative;
+    background: linear-gradient(180deg, #fff, #f8fafc);
+    border-bottom:1px solid var(--line);
+    height: 240px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .cv{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display:block;
+  }
+
+  .thumb-fallback{
+    position:absolute;
+    inset: 10px;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: .8px;
+    background: rgba(255,255,255,.6);
+  }
+
+  .card-body{padding:10px 10px 12px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .fname{font-weight:700;font-size:13px;color:var(--text);text-decoration:none; line-height:1.2;}
+  .fname:hover{text-decoration:underline}
+  .meta{font-size:12px;color:var(--muted)}
+
+  .actions{margin-top:auto; display:flex; gap:8px; padding-top:6px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:7px 10px;border-radius:10px;border:1px solid var(--btn);
+    background:var(--btn);color:var(--btnText);text-decoration:none;font-size:12px;
+  }
   .btn.ghost{background:#fff;color:var(--btn)}
-  .sortTag{font-size:11px;color:var(--muted);margin-left:6px}
-  @media (max-width:820px){
-    th:nth-child(2), td:nth-child(2), th:nth-child(3), td:nth-child(3){display:none}
+
+  .hidden{display:none !important}
+
+  @media (max-width: 520px){
+    .search{min-width: 100%}
+    .controls{justify-content:stretch}
+    select,.toggle{flex:1}
   }
 </style>
 </head>
+
 <body>
   <div class="wrap">
     <header>
@@ -54,502 +133,754 @@
         <div class="dots" title="Mr Downes Maths"><span class="dot" style="background:#2563eb"></span><span class="dot" style="background:#ef4444"></span><span class="dot" style="background:#22c55e"></span><span class="dot" style="background:#111827"></span></div>
         <div class="titles">
           <div class="h1">Mr Downes Maths</div>
-          <div class="h2">PDF · Gallery</div>
+          <div class="h2">PDF Gallery</div>
         </div>
       </div>
+
       <div class="controls">
-        <div class="search"><input id="q" type="text" placeholder="Search…" autocomplete="off"></div>
-        <div class="hint">Click headers to sort: Most recent · A–Z · Size</div>
+        <div class="search"><input id="q" type="text" placeholder="Search PDFs…" autocomplete="off"></div>
+
+        <select id="sort">
+          <option value="mtime_desc" selected>Most recent</option>
+          <option value="name_asc">A–Z</option>
+          <option value="size_desc">Largest</option>
+          <option value="size_asc">Smallest</option>
+        </select>
+
+        <button class="toggle" id="thumbToggle" type="button">Thumbnails: On</button>
       </div>
     </header>
 
-    <div class="panel">
-      <div class="topbar">
-        <div><span id="count">26</span> PDF(s)</div>
+    <div class="bar">
+      <div class="bar-top">
+        <div><span id="count">31</span> PDF(s)</div>
         <div>Folder: <code>pdf</code></div>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th data-key="name" data-type="text">Name <span class="sortTag" id="tagName"></span></th>
-            <th data-key="size" data-type="num">Size <span class="sortTag" id="tagSize"></span></th>
-            <th data-key="mtime" data-type="num">Modified <span class="sortTag" id="tagTime"></span></th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-          
-          
-            <tr class="row"
-                data-name="am3_optimized.pdf"
-                data-size="70232594"
-                data-mtime="1769236763">
-              <td class="name">
-                <a class="file" href="am3_Optimized.pdf" target="_blank" rel="noopener">am3_Optimized.pdf</a>
-                <span class="meta">67.0 MB · 2026-01-24</span>
-              </td>
-              <td class="num">67.0 MB</td>
-              <td class="num">2026-01-24</td>
-              <td class="actions">
-                <a class="btn" href="am3_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="am3_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="applied-mathematics_spec.pdf"
-                data-size="964939"
-                data-mtime="1769729406">
-              <td class="name">
-                <a class="file" href="Applied-Mathematics_SPEC.pdf" target="_blank" rel="noopener">Applied-Mathematics_SPEC.pdf</a>
-                <span class="meta">942.3 KB · 2026-01-29</span>
-              </td>
-              <td class="num">942.3 KB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="Applied-Mathematics_SPEC.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="Applied-Mathematics_SPEC.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="induction booklet for staff.pdf"
-                data-size="3618036"
-                data-mtime="1762705306">
-              <td class="name">
-                <a class="file" href="Induction%20Booklet%20for%20staff.pdf" target="_blank" rel="noopener">Induction Booklet for staff.pdf</a>
-                <span class="meta">3.5 MB · 2025-11-09</span>
-              </td>
-              <td class="num">3.5 MB</td>
-              <td class="num">2025-11-09</td>
-              <td class="actions">
-                <a class="btn" href="Induction%20Booklet%20for%20staff.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="Induction%20Booklet%20for%20staff.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="jc_mathematics_specification.pdf"
-                data-size="1174271"
-                data-mtime="1769729387">
-              <td class="name">
-                <a class="file" href="JC_Mathematics_Specification.pdf" target="_blank" rel="noopener">JC_Mathematics_Specification.pdf</a>
-                <span class="meta">1.1 MB · 2026-01-29</span>
-              </td>
-              <td class="num">1.1 MB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="JC_Mathematics_Specification.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="JC_Mathematics_Specification.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lc-computer-science-specification-updated.pdf"
-                data-size="1286193"
-                data-mtime="1769729433">
-              <td class="name">
-                <a class="file" href="LC-Computer-Science-specification-updated.pdf" target="_blank" rel="noopener">LC-Computer-Science-specification-updated.pdf</a>
-                <span class="meta">1.2 MB · 2026-01-29</span>
-              </td>
-              <td class="num">1.2 MB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="LC-Computer-Science-specification-updated.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="LC-Computer-Science-specification-updated.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lc-phy-hl_pp-optimized.pdf"
-                data-size="12299125"
-                data-mtime="1769627175">
-              <td class="name">
-                <a class="file" href="lc-phy-hl_pp-Optimized.pdf" target="_blank" rel="noopener">lc-phy-hl_pp-Optimized.pdf</a>
-                <span class="meta">11.7 MB · 2026-01-28</span>
-              </td>
-              <td class="num">11.7 MB</td>
-              <td class="num">2026-01-28</td>
-              <td class="actions">
-                <a class="btn" href="lc-phy-hl_pp-Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="lc-phy-hl_pp-Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lca-ma.pdf"
-                data-size="1509973"
-                data-mtime="1763532484">
-              <td class="name">
-                <a class="file" href="LCA-MA.pdf" target="_blank" rel="noopener">LCA-MA.pdf</a>
-                <span class="meta">1.4 MB · 2025-11-19</span>
-              </td>
-              <td class="num">1.4 MB</td>
-              <td class="num">2025-11-19</td>
-              <td class="actions">
-                <a class="btn" href="LCA-MA.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="LCA-MA.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lca-mathematical-applications-(en)_optimized.pdf"
-                data-size="1329982"
-                data-mtime="1769031681">
-              <td class="name">
-                <a class="file" href="LCA-Mathematical-Applications-%28EN%29_Optimized.pdf" target="_blank" rel="noopener">LCA-Mathematical-Applications-(EN)_Optimized.pdf</a>
-                <span class="meta">1.3 MB · 2026-01-21</span>
-              </td>
-              <td class="num">1.3 MB</td>
-              <td class="num">2026-01-21</td>
-              <td class="actions">
-                <a class="btn" href="LCA-Mathematical-Applications-%28EN%29_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="LCA-Mathematical-Applications-%28EN%29_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lca2_optimized.pdf"
-                data-size="16663419"
-                data-mtime="1768697624">
-              <td class="name">
-                <a class="file" href="lca2_Optimized.pdf" target="_blank" rel="noopener">lca2_Optimized.pdf</a>
-                <span class="meta">15.9 MB · 2026-01-18</span>
-              </td>
-              <td class="num">15.9 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="lca2_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="lca2_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lca3_optimized.pdf"
-                data-size="16674915"
-                data-mtime="1768697392">
-              <td class="name">
-                <a class="file" href="lca3_Optimized.pdf" target="_blank" rel="noopener">lca3_Optimized.pdf</a>
-                <span class="meta">15.9 MB · 2026-01-18</span>
-              </td>
-              <td class="num">15.9 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="lca3_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="lca3_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lca4_optimized.pdf"
-                data-size="14952098"
-                data-mtime="1768697356">
-              <td class="name">
-                <a class="file" href="lca4_Optimized.pdf" target="_blank" rel="noopener">lca4_Optimized.pdf</a>
-                <span class="meta">14.3 MB · 2026-01-18</span>
-              </td>
-              <td class="num">14.3 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="lca4_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="lca4_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="lca_mathsmaths.pdf"
-                data-size="243083"
-                data-mtime="1769059933">
-              <td class="name">
-                <a class="file" href="lca_mathsmaths.pdf" target="_blank" rel="noopener">lca_mathsmaths.pdf</a>
-                <span class="meta">237.4 KB · 2026-01-22</span>
-              </td>
-              <td class="num">237.4 KB</td>
-              <td class="num">2026-01-22</td>
-              <td class="actions">
-                <a class="btn" href="lca_mathsmaths.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="lca_mathsmaths.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="physics-spec-new.pdf"
-                data-size="2267010"
-                data-mtime="1769729452">
-              <td class="name">
-                <a class="file" href="PHYSICS-Spec-New.pdf" target="_blank" rel="noopener">PHYSICS-Spec-New.pdf</a>
-                <span class="meta">2.2 MB · 2026-01-29</span>
-              </td>
-              <td class="num">2.2 MB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="PHYSICS-Spec-New.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="PHYSICS-Spec-New.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="physics_guidelines.pdf"
-                data-size="898392"
-                data-mtime="1769628819">
-              <td class="name">
-                <a class="file" href="Physics_guidelines.pdf" target="_blank" rel="noopener">Physics_guidelines.pdf</a>
-                <span class="meta">877.3 KB · 2026-01-28</span>
-              </td>
-              <td class="num">877.3 KB</td>
-              <td class="num">2026-01-28</td>
-              <td class="actions">
-                <a class="btn" href="Physics_guidelines.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="Physics_guidelines.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="physics_syllabus_2026.pdf"
-                data-size="231841"
-                data-mtime="1769626966">
-              <td class="name">
-                <a class="file" href="Physics_syllabus_2026.pdf" target="_blank" rel="noopener">Physics_syllabus_2026.pdf</a>
-                <span class="meta">226.4 KB · 2026-01-28</span>
-              </td>
-              <td class="num">226.4 KB</td>
-              <td class="num">2026-01-28</td>
-              <td class="actions">
-                <a class="btn" href="Physics_syllabus_2026.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="Physics_syllabus_2026.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="primary_mathematics_uk.pdf"
-                data-size="499934"
-                data-mtime="1769728492">
-              <td class="name">
-                <a class="file" href="PRIMARY_Mathematics_UK.pdf" target="_blank" rel="noopener">PRIMARY_Mathematics_UK.pdf</a>
-                <span class="meta">488.2 KB · 2026-01-29</span>
-              </td>
-              <td class="num">488.2 KB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="PRIMARY_Mathematics_UK.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="PRIMARY_Mathematics_UK.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="rwp_optimized.pdf"
-                data-size="75936416"
-                data-mtime="1768697247">
-              <td class="name">
-                <a class="file" href="rwp_Optimized.pdf" target="_blank" rel="noopener">rwp_Optimized.pdf</a>
-                <span class="meta">72.4 MB · 2026-01-18</span>
-              </td>
-              <td class="num">72.4 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="rwp_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="rwp_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="science_curriculum.pdf"
-                data-size="457792"
-                data-mtime="1769726703">
-              <td class="name">
-                <a class="file" href="Science_Curriculum.pdf" target="_blank" rel="noopener">Science_Curriculum.pdf</a>
-                <span class="meta">447.1 KB · 2026-01-29</span>
-              </td>
-              <td class="num">447.1 KB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="Science_Curriculum.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="Science_Curriculum.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="scsec25_maths_leansyllabus.pdf"
-                data-size="236568"
-                data-mtime="1768138830">
-              <td class="name">
-                <a class="file" href="SCSEC25_Maths_LEANsyllabus.pdf" target="_blank" rel="noopener">SCSEC25_Maths_LEANsyllabus.pdf</a>
-                <span class="meta">231.0 KB · 2026-01-11</span>
-              </td>
-              <td class="num">231.0 KB</td>
-              <td class="num">2026-01-11</td>
-              <td class="actions">
-                <a class="btn" href="SCSEC25_Maths_LEANsyllabus.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="SCSEC25_Maths_LEANsyllabus.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="scsec25_maths_syllabus_examination-2015_english.pdf"
-                data-size="928039"
-                data-mtime="1769729465">
-              <td class="name">
-                <a class="file" href="SCSEC25_Maths_syllabus_examination-2015_English.pdf" target="_blank" rel="noopener">SCSEC25_Maths_syllabus_examination-2015_English.pdf</a>
-                <span class="meta">906.3 KB · 2026-01-29</span>
-              </td>
-              <td class="num">906.3 KB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="SCSEC25_Maths_syllabus_examination-2015_English.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="SCSEC25_Maths_syllabus_examination-2015_English.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="specification-for-junior-cycle-science.pdf"
-                data-size="756367"
-                data-mtime="1769726766">
-              <td class="name">
-                <a class="file" href="Specification-for-Junior-Cycle-Science.pdf" target="_blank" rel="noopener">Specification-for-Junior-Cycle-Science.pdf</a>
-                <span class="meta">738.6 KB · 2026-01-29</span>
-              </td>
-              <td class="num">738.6 KB</td>
-              <td class="num">2026-01-29</td>
-              <td class="actions">
-                <a class="btn" href="Specification-for-Junior-Cycle-Science.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="Specification-for-Junior-Cycle-Science.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="tt2h_optimized.pdf"
-                data-size="54392046"
-                data-mtime="1768697110">
-              <td class="name">
-                <a class="file" href="tt2h_Optimized.pdf" target="_blank" rel="noopener">tt2h_Optimized.pdf</a>
-                <span class="meta">51.9 MB · 2026-01-18</span>
-              </td>
-              <td class="num">51.9 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="tt2h_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="tt2h_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="tt2o_optimized.pdf"
-                data-size="46823982"
-                data-mtime="1768696931">
-              <td class="name">
-                <a class="file" href="tt2o_Optimized.pdf" target="_blank" rel="noopener">tt2o_Optimized.pdf</a>
-                <span class="meta">44.7 MB · 2026-01-18</span>
-              </td>
-              <td class="num">44.7 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="tt2o_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="tt2o_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="tt3_optimized.pdf"
-                data-size="54518346"
-                data-mtime="1769236347">
-              <td class="name">
-                <a class="file" href="tt3_Optimized.pdf" target="_blank" rel="noopener">tt3_Optimized.pdf</a>
-                <span class="meta">52.0 MB · 2026-01-24</span>
-              </td>
-              <td class="num">52.0 MB</td>
-              <td class="num">2026-01-24</td>
-              <td class="actions">
-                <a class="btn" href="tt3_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="tt3_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="tt4_optimized.pdf"
-                data-size="48236462"
-                data-mtime="1768696685">
-              <td class="name">
-                <a class="file" href="tt4_Optimized.pdf" target="_blank" rel="noopener">tt4_Optimized.pdf</a>
-                <span class="meta">46.0 MB · 2026-01-18</span>
-              </td>
-              <td class="num">46.0 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="tt4_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="tt4_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-            <tr class="row"
-                data-name="tt5_optimized.pdf"
-                data-size="35167275"
-                data-mtime="1768695511">
-              <td class="name">
-                <a class="file" href="tt5_Optimized.pdf" target="_blank" rel="noopener">tt5_Optimized.pdf</a>
-                <span class="meta">33.5 MB · 2026-01-18</span>
-              </td>
-              <td class="num">33.5 MB</td>
-              <td class="num">2026-01-18</td>
-              <td class="actions">
-                <a class="btn" href="tt5_Optimized.pdf" target="_blank" rel="noopener">View</a>
-                <a class="btn ghost" href="tt5_Optimized.pdf" download>Download</a>
-              </td>
-            </tr>
-        </tbody>
-      </table>
+      <section class="grid" id="grid">
+        
+        <article class="card"
+          data-name="am3_optimized.pdf"
+          data-size="70232594"
+          data-mtime="1769236763">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="am3_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="am3_Optimized.pdf" target="_blank" rel="noopener">am3_Optimized.pdf</a>
+            <div class="meta">67.0 MB · 2026-01-24</div>
+
+            <div class="actions">
+              <a class="btn" href="am3_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="am3_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="applied-mathematics_spec.pdf"
+          data-size="964939"
+          data-mtime="1769729406">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="Applied-Mathematics_SPEC.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="Applied-Mathematics_SPEC.pdf" target="_blank" rel="noopener">Applied-Mathematics_SPEC.pdf</a>
+            <div class="meta">942.3 KB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="Applied-Mathematics_SPEC.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="Applied-Mathematics_SPEC.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="induction booklet for staff.pdf"
+          data-size="3618036"
+          data-mtime="1762705306">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="Induction%20Booklet%20for%20staff.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="Induction%20Booklet%20for%20staff.pdf" target="_blank" rel="noopener">Induction Booklet for staff.pdf</a>
+            <div class="meta">3.5 MB · 2025-11-09</div>
+
+            <div class="actions">
+              <a class="btn" href="Induction%20Booklet%20for%20staff.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="Induction%20Booklet%20for%20staff.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="jc_mathematics_specification.pdf"
+          data-size="1174271"
+          data-mtime="1769729387">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="JC_Mathematics_Specification.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="JC_Mathematics_Specification.pdf" target="_blank" rel="noopener">JC_Mathematics_Specification.pdf</a>
+            <div class="meta">1.1 MB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="JC_Mathematics_Specification.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="JC_Mathematics_Specification.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lc-computer-science-specification-updated.pdf"
+          data-size="1286193"
+          data-mtime="1769729433">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="LC-Computer-Science-specification-updated.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="LC-Computer-Science-specification-updated.pdf" target="_blank" rel="noopener">LC-Computer-Science-specification-updated.pdf</a>
+            <div class="meta">1.2 MB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="LC-Computer-Science-specification-updated.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="LC-Computer-Science-specification-updated.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lc-mat-p1-ol.pdf"
+          data-size="7887452"
+          data-mtime="1769482543">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lc-mat-p1-ol.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lc-mat-p1-ol.pdf" target="_blank" rel="noopener">lc-mat-p1-ol.pdf</a>
+            <div class="meta">7.5 MB · 2026-01-27</div>
+
+            <div class="actions">
+              <a class="btn" href="lc-mat-p1-ol.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lc-mat-p1-ol.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lc-mat-p2-ol.pdf"
+          data-size="8728899"
+          data-mtime="1769481146">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lc-mat-p2-ol.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lc-mat-p2-ol.pdf" target="_blank" rel="noopener">lc-mat-p2-ol.pdf</a>
+            <div class="meta">8.3 MB · 2026-01-27</div>
+
+            <div class="actions">
+              <a class="btn" href="lc-mat-p2-ol.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lc-mat-p2-ol.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lc-phy-hl.pdf"
+          data-size="40894567"
+          data-mtime="1769648359">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lc-phy-hl.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lc-phy-hl.pdf" target="_blank" rel="noopener">lc-phy-hl.pdf</a>
+            <div class="meta">39.0 MB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="lc-phy-hl.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lc-phy-hl.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lc-phy-hl_pp-optimized.pdf"
+          data-size="12299125"
+          data-mtime="1769627175">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lc-phy-hl_pp-Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lc-phy-hl_pp-Optimized.pdf" target="_blank" rel="noopener">lc-phy-hl_pp-Optimized.pdf</a>
+            <div class="meta">11.7 MB · 2026-01-28</div>
+
+            <div class="actions">
+              <a class="btn" href="lc-phy-hl_pp-Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lc-phy-hl_pp-Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lca-ma.pdf"
+          data-size="1509973"
+          data-mtime="1763532484">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="LCA-MA.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="LCA-MA.pdf" target="_blank" rel="noopener">LCA-MA.pdf</a>
+            <div class="meta">1.4 MB · 2025-11-19</div>
+
+            <div class="actions">
+              <a class="btn" href="LCA-MA.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="LCA-MA.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lca-mathematical-applications-(en)_optimized.pdf"
+          data-size="1329982"
+          data-mtime="1769031681">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="LCA-Mathematical-Applications-%28EN%29_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="LCA-Mathematical-Applications-%28EN%29_Optimized.pdf" target="_blank" rel="noopener">LCA-Mathematical-Applications-(EN)_Optimized.pdf</a>
+            <div class="meta">1.3 MB · 2026-01-21</div>
+
+            <div class="actions">
+              <a class="btn" href="LCA-Mathematical-Applications-%28EN%29_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="LCA-Mathematical-Applications-%28EN%29_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lca2_optimized.pdf"
+          data-size="16663419"
+          data-mtime="1768697624">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lca2_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lca2_Optimized.pdf" target="_blank" rel="noopener">lca2_Optimized.pdf</a>
+            <div class="meta">15.9 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="lca2_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lca2_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lca2pages.pdf"
+          data-size="243083"
+          data-mtime="1769580067">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lca2pages.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lca2pages.pdf" target="_blank" rel="noopener">lca2pages.pdf</a>
+            <div class="meta">237.4 KB · 2026-01-28</div>
+
+            <div class="actions">
+              <a class="btn" href="lca2pages.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lca2pages.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lca3_optimized.pdf"
+          data-size="16674915"
+          data-mtime="1768697392">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lca3_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lca3_Optimized.pdf" target="_blank" rel="noopener">lca3_Optimized.pdf</a>
+            <div class="meta">15.9 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="lca3_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lca3_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lca4_optimized.pdf"
+          data-size="14952098"
+          data-mtime="1768697356">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lca4_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lca4_Optimized.pdf" target="_blank" rel="noopener">lca4_Optimized.pdf</a>
+            <div class="meta">14.3 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="lca4_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lca4_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="lca_mathsmaths.pdf"
+          data-size="243083"
+          data-mtime="1769059933">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="lca_mathsmaths.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="lca_mathsmaths.pdf" target="_blank" rel="noopener">lca_mathsmaths.pdf</a>
+            <div class="meta">237.4 KB · 2026-01-22</div>
+
+            <div class="actions">
+              <a class="btn" href="lca_mathsmaths.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="lca_mathsmaths.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="maths-jc-o-pp.pdf"
+          data-size="1975084"
+          data-mtime="1769483912">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="Maths-JC-O-pp.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="Maths-JC-O-pp.pdf" target="_blank" rel="noopener">Maths-JC-O-pp.pdf</a>
+            <div class="meta">1.9 MB · 2026-01-27</div>
+
+            <div class="actions">
+              <a class="btn" href="Maths-JC-O-pp.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="Maths-JC-O-pp.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="physics-spec-new.pdf"
+          data-size="2267010"
+          data-mtime="1769729452">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="PHYSICS-Spec-New.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="PHYSICS-Spec-New.pdf" target="_blank" rel="noopener">PHYSICS-Spec-New.pdf</a>
+            <div class="meta">2.2 MB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="PHYSICS-Spec-New.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="PHYSICS-Spec-New.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="physics_guidelines.pdf"
+          data-size="898392"
+          data-mtime="1769628819">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="Physics_guidelines.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="Physics_guidelines.pdf" target="_blank" rel="noopener">Physics_guidelines.pdf</a>
+            <div class="meta">877.3 KB · 2026-01-28</div>
+
+            <div class="actions">
+              <a class="btn" href="Physics_guidelines.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="Physics_guidelines.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="physics_syllabus_2026.pdf"
+          data-size="231841"
+          data-mtime="1769626966">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="Physics_syllabus_2026.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="Physics_syllabus_2026.pdf" target="_blank" rel="noopener">Physics_syllabus_2026.pdf</a>
+            <div class="meta">226.4 KB · 2026-01-28</div>
+
+            <div class="actions">
+              <a class="btn" href="Physics_syllabus_2026.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="Physics_syllabus_2026.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="primary_mathematics_uk.pdf"
+          data-size="499934"
+          data-mtime="1769728492">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="PRIMARY_Mathematics_UK.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="PRIMARY_Mathematics_UK.pdf" target="_blank" rel="noopener">PRIMARY_Mathematics_UK.pdf</a>
+            <div class="meta">488.2 KB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="PRIMARY_Mathematics_UK.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="PRIMARY_Mathematics_UK.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="rwp_optimized.pdf"
+          data-size="75936416"
+          data-mtime="1768697247">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="rwp_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="rwp_Optimized.pdf" target="_blank" rel="noopener">rwp_Optimized.pdf</a>
+            <div class="meta">72.4 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="rwp_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="rwp_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="science_curriculum.pdf"
+          data-size="457792"
+          data-mtime="1769726703">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="Science_Curriculum.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="Science_Curriculum.pdf" target="_blank" rel="noopener">Science_Curriculum.pdf</a>
+            <div class="meta">447.1 KB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="Science_Curriculum.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="Science_Curriculum.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="scsec25_maths_leansyllabus.pdf"
+          data-size="236568"
+          data-mtime="1768138830">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="SCSEC25_Maths_LEANsyllabus.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="SCSEC25_Maths_LEANsyllabus.pdf" target="_blank" rel="noopener">SCSEC25_Maths_LEANsyllabus.pdf</a>
+            <div class="meta">231.0 KB · 2026-01-11</div>
+
+            <div class="actions">
+              <a class="btn" href="SCSEC25_Maths_LEANsyllabus.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="SCSEC25_Maths_LEANsyllabus.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="scsec25_maths_syllabus_examination-2015_english.pdf"
+          data-size="928039"
+          data-mtime="1769729465">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="SCSEC25_Maths_syllabus_examination-2015_English.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="SCSEC25_Maths_syllabus_examination-2015_English.pdf" target="_blank" rel="noopener">SCSEC25_Maths_syllabus_examination-2015_English.pdf</a>
+            <div class="meta">906.3 KB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="SCSEC25_Maths_syllabus_examination-2015_English.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="SCSEC25_Maths_syllabus_examination-2015_English.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="specification-for-junior-cycle-science.pdf"
+          data-size="756367"
+          data-mtime="1769726766">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="Specification-for-Junior-Cycle-Science.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="Specification-for-Junior-Cycle-Science.pdf" target="_blank" rel="noopener">Specification-for-Junior-Cycle-Science.pdf</a>
+            <div class="meta">738.6 KB · 2026-01-29</div>
+
+            <div class="actions">
+              <a class="btn" href="Specification-for-Junior-Cycle-Science.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="Specification-for-Junior-Cycle-Science.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="tt2h_optimized.pdf"
+          data-size="54392046"
+          data-mtime="1768697110">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="tt2h_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="tt2h_Optimized.pdf" target="_blank" rel="noopener">tt2h_Optimized.pdf</a>
+            <div class="meta">51.9 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="tt2h_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="tt2h_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="tt2o_optimized.pdf"
+          data-size="46823982"
+          data-mtime="1768696931">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="tt2o_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="tt2o_Optimized.pdf" target="_blank" rel="noopener">tt2o_Optimized.pdf</a>
+            <div class="meta">44.7 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="tt2o_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="tt2o_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="tt3_optimized.pdf"
+          data-size="54518346"
+          data-mtime="1769236347">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="tt3_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="tt3_Optimized.pdf" target="_blank" rel="noopener">tt3_Optimized.pdf</a>
+            <div class="meta">52.0 MB · 2026-01-24</div>
+
+            <div class="actions">
+              <a class="btn" href="tt3_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="tt3_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="tt4_optimized.pdf"
+          data-size="48236462"
+          data-mtime="1768696685">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="tt4_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="tt4_Optimized.pdf" target="_blank" rel="noopener">tt4_Optimized.pdf</a>
+            <div class="meta">46.0 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="tt4_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="tt4_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+        <article class="card"
+          data-name="tt5_optimized.pdf"
+          data-size="35167275"
+          data-mtime="1768695511">
+          <div class="thumb" title="Preview">
+            <canvas class="cv" width="240" height="320" data-pdf="tt5_Optimized.pdf"></canvas>
+            <div class="thumb-fallback" aria-hidden="true">PDF</div>
+          </div>
+
+          <div class="card-body">
+            <a class="fname" href="tt5_Optimized.pdf" target="_blank" rel="noopener">tt5_Optimized.pdf</a>
+            <div class="meta">33.5 MB · 2026-01-18</div>
+
+            <div class="actions">
+              <a class="btn" href="tt5_Optimized.pdf" target="_blank" rel="noopener">View</a>
+              <a class="btn ghost" href="tt5_Optimized.pdf" download>Download</a>
+            </div>
+          </div>
+        </article>
+      </section>
     </div>
   </div>
 
-<script>
-  const q = document.getElementById("q");
-  const tbody = document.getElementById("tbody");
-  const countEl = document.getElementById("count");
-  const tags = {
-    name: document.getElementById("tagName"),
-    size: document.getElementById("tagSize"),
-    mtime: document.getElementById("tagTime"),
-  };
+  <!-- PDF.js (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.js"></script>
+  <script>
+    const q = document.getElementById('q');
+    const sortSel = document.getElementById('sort');
+    const grid = document.getElementById('grid');
+    const countEl = document.getElementById('count');
+    const thumbToggle = document.getElementById('thumbToggle');
 
-  let sortKey = "mtime";
-  let sortDir = "desc"; // default: most recent
+    let thumbsOn = true;
 
-  function clearTags() {
-    for (const k of Object.keys(tags)) tags[k].textContent = "";
-  }
-  function setTag() {
-    clearTags();
-    const arrow = sortDir === "asc" ? "↑" : "↓";
-    if (tags[sortKey]) tags[sortKey].textContent = arrow;
-  }
-
-  function rowsArray() {
-    return Array.from(tbody.querySelectorAll("tr.row"));
-  }
-
-  function sortRows() {
-    const rows = rowsArray();
-    rows.sort((a,b) => {
-      const ta = a.dataset[sortKey];
-      const tb = b.dataset[sortKey];
-
-      if (sortKey === "name") {
-        const cmp = (ta || "").localeCompare(tb || "");
-        return sortDir === "asc" ? cmp : -cmp;
-      } else {
-        const na = Number(ta || 0), nb = Number(tb || 0);
-        return sortDir === "asc" ? (na - nb) : (nb - na);
-      }
-    });
-    for (const r of rows) tbody.appendChild(r);
-    setTag();
-  }
-
-  function applyFilter() {
-    const term = (q.value || "").trim().toLowerCase();
-    let shown = 0;
-    for (const r of rowsArray()) {
-      const name = (r.dataset.name || "");
-      const ok = !term || name.includes(term);
-      r.style.display = ok ? "" : "none";
-      if (ok) shown++;
+    function cards() {
+      return Array.from(grid.querySelectorAll('.card'));
     }
-    countEl.textContent = shown;
-  }
 
-  document.querySelectorAll("th[data-key]").forEach(th => {
-    th.addEventListener("click", () => {
-      const key = th.dataset.key;
-      if (sortKey === key) {
-        sortDir = (sortDir === "asc") ? "desc" : "asc";
-      } else {
-        sortKey = key;
-        sortDir = (key === "mtime") ? "desc" : "asc"; // sensible defaults
+    function applyFilter() {
+      const term = (q.value || '').trim().toLowerCase();
+      let shown = 0;
+      for (const c of cards()) {
+        const name = c.dataset.name || '';
+        const ok = !term || name.includes(term);
+        c.classList.toggle('hidden', !ok);
+        if (ok) shown++;
       }
-      sortRows();
+      countEl.textContent = shown;
+    }
+
+    function sortCards() {
+      const mode = sortSel.value;
+      const list = cards();
+
+      const cmpText = (a,b) => (a||'').localeCompare(b||'');
+      const cmpNum  = (a,b) => (Number(a||0) - Number(b||0));
+
+      list.sort((A,B) => {
+        if (mode === 'mtime_desc') return -cmpNum(A.dataset.mtime, B.dataset.mtime);
+        if (mode === 'name_asc')   return  cmpText(A.dataset.name, B.dataset.name);
+        if (mode === 'size_desc')  return -cmpNum(A.dataset.size, B.dataset.size);
+        if (mode === 'size_asc')   return  cmpNum(A.dataset.size, B.dataset.size);
+        return 0;
+      });
+
+      for (const c of list) grid.appendChild(c);
+      // after sorting, thumbnails will be handled by observer anyway
+    }
+
+    q.addEventListener('input', applyFilter);
+    sortSel.addEventListener('change', () => {
+      sortCards();
+      applyFilter();
     });
-  });
 
-  q.addEventListener("input", applyFilter);
+    thumbToggle.addEventListener('click', () => {
+      thumbsOn = !thumbsOn;
+      thumbToggle.textContent = 'Thumbnails: ' + (thumbsOn ? 'On' : 'Off');
+      document.documentElement.style.setProperty('--shadow', thumbsOn ? '0 8px 24px rgba(17,24,39,.08)' : 'none');
 
-  // initial state
-  setTag();
-  sortRows();
-</script>
+      // If turned off: stop rendering and hide canvases
+      for (const cv of document.querySelectorAll('canvas.cv')) {
+        cv.style.display = thumbsOn ? 'block' : 'none';
+        cv.nextElementSibling.style.display = thumbsOn ? 'none' : 'flex';
+      }
+    });
+
+    // --- PDF.js thumbnail rendering (lazy) ---
+    // Worker setup:
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js";
+
+    const rendered = new Set();
+
+    async function renderThumb(canvas) {
+      if (!thumbsOn) return;
+      const url = canvas.dataset.pdf;
+      if (!url || rendered.has(url)) return;
+      rendered.add(url);
+
+      const fallback = canvas.nextElementSibling; // .thumb-fallback
+
+      try {
+        const loadingTask = pdfjsLib.getDocument(url);
+        const pdf = await loadingTask.promise;
+        const page = await pdf.getPage(1);
+
+        // Fit to card thumb area
+        const desiredWidth = canvas.getBoundingClientRect().width || 240;
+        const viewport1 = page.getViewport({ scale: 1 });
+        const scale = desiredWidth / viewport1.width;
+        const viewport = page.getViewport({ scale });
+
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+
+        const ctx = canvas.getContext('2d', { alpha: false });
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        // Hide fallback once rendered
+        if (fallback) fallback.style.display = 'none';
+      } catch (e) {
+        // keep fallback visible if render fails
+        if (fallback) fallback.style.display = 'flex';
+      }
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          const cv = e.target;
+          renderThumb(cv);
+          io.unobserve(cv);
+        }
+      }
+    }, { rootMargin: "300px 0px" });
+
+    function observeThumbs() {
+      for (const cv of document.querySelectorAll('canvas.cv')) {
+        // initial state based on toggle
+        cv.style.display = thumbsOn ? 'block' : 'none';
+        const fb = cv.nextElementSibling;
+        if (fb) fb.style.display = thumbsOn ? 'none' : 'flex';
+
+        if (thumbsOn) io.observe(cv);
+      }
+    }
+
+    // Initial:
+    sortCards();
+    applyFilter();
+    observeThumbs();
+  </script>
 </body>
 </html>
